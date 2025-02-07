@@ -14,7 +14,7 @@ public class SeatLayout {
 
   private static final String SEAT_REGEX = "[A-T][0-7]";
 
-  private boolean[][] seats;
+  private final boolean[][] seats;
 
   public SeatLayout() {
     seats = new boolean[20][8];

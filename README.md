@@ -9,6 +9,8 @@ Requirements
 
 `mvn -Pnative package`
 
+After running the command, a file named JPMorgan-FlightSeatReservation will be created in target subdirectory 
+
 ### Executable JAR
 
 Requirements

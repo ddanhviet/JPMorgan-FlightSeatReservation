@@ -25,13 +25,7 @@ public class SeatLayoutPersistenceService {
   }
 
   public void serializeSeatLayout(SeatLayout seatLayout, String anyFilename) throws PersistenceException {
-    //try (FileWriter fileWriter = new FileWriter(filename)) {
     try {
-      //String jsonString = objectMapper.writeValueAsString(seatLayout);
-      //log.debug("Seat Layout to disk {}", (Object) seatLayout.seats);
-      //log.debug("Seat Layout JSON to disk {}", jsonString);
-      //fileWriter.write(jsonString);
-
       File f = new File(anyFilename);
       objectMapper.writeValue(f, seatLayout);
     } catch (IOException e) {
@@ -47,7 +41,6 @@ public class SeatLayoutPersistenceService {
   public SeatLayout deserializeSeatLayout(String anyFilename) throws PersistenceException {
     try {
       File f = new File(anyFilename);
-      //log.debug("Seat Layout JSON {}", seatLayoutJson);
       return objectMapper.readValue(f, SeatLayout.class);
     } catch (IOException e) {
       throw new PersistenceException("Unable to obtain seat layout from file", e);

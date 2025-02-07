@@ -27,10 +27,6 @@ public class SeatBookService {
     if (!f.exists())
       layout = new SeatLayout();
     else layout = seatLayoutPersistenceService.deserializeSeatLayout();
-    //log.debug("Seat layout book service {} {} {}",
-    //      layout.seats.length,
-    //      layout.seats[0].length,
-    //      layout.seats);
 
     seatOperation = (wantedSeats, supposedState, thrower) -> {
       for (var seatId : wantedSeats) {

@@ -19,8 +19,7 @@ public class FlightSeatApplication {
 
   private final Map<String, InputProcess<String, Integer>> actionMap;
 
-  public FlightSeatApplication() throws PersistenceException {
-    SeatBookService seatBookService = new SeatBookService();
+  public FlightSeatApplication(SeatBookService seatBookService) throws PersistenceException {
     actionMap = generateActionMap(seatBookService);
   }
 
@@ -28,12 +27,14 @@ public class FlightSeatApplication {
     boolean executionSuccess;
     log.info("Seat operation {} received", (Object) commandArray);
     try {
-      executionSuccess = actionMap.get(commandArray[0]).processInput(commandArray[1], Integer.parseInt(commandArray[2]));
+      executionSuccess = actionMap
+            .get(commandArray[0])
+            .processInput(commandArray[1], Integer.parseInt(commandArray[2]));
     } catch (SeatInvalidException | SeatOperationException exception) {
-      log.error("Unable to complete seat operations with input {}", commandArray, exception);
+      log.error("Failed to execute SeatBookService operation with input {}", commandArray, exception);
       executionSuccess = false;
-    } catch (NullPointerException npe) {
-      log.warn("Action {} not defined", commandArray[0], npe); // TODO test this
+    } catch (Exception e) {
+      log.warn("Unable to complete seat operations with input {}", commandArray, e); // TODO test wrong action, null seat layout
       executionSuccess = false;
     }
 
@@ -49,7 +50,9 @@ public class FlightSeatApplication {
 
   public static void main(String[] args) {
     try {
-      FlightSeatApplication fsa = new FlightSeatApplication();
+      SeatBookService sbs = new SeatBookService();
+      FlightSeatApplication fsa = new FlightSeatApplication(sbs);
+
       fsa.handleInput(args);
     } catch (PersistenceException pe) {
       log.error("Cannot create flight seat application", pe);
