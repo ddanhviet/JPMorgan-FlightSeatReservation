@@ -27,7 +27,9 @@ public class SeatLayoutPersistenceService {
   public void serializeSeatLayout(SeatLayout seatLayout, String anyFilename) throws PersistenceException {
     try {
       File f = new File(anyFilename);
-      objectMapper.writeValue(f, seatLayout);
+      objectMapper
+            .writerWithDefaultPrettyPrinter()
+            .writeValue(f, seatLayout);
     } catch (IOException e) {
       log.error("Unable to persist seat layout to file", e);
       throw new PersistenceException();

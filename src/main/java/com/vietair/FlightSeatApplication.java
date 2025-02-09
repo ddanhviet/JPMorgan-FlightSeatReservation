@@ -34,7 +34,7 @@ public class FlightSeatApplication {
       log.error("Failed to execute SeatBookService operation with input {}", commandArray, exception);
       executionSuccess = false;
     } catch (Exception e) {
-      log.warn("Unable to complete seat operations with input {}", commandArray, e); // TODO test wrong action, null seat layout
+      log.warn("Unable to complete seat operations with input {}", commandArray, e);
       executionSuccess = false;
     }
 

@@ -52,8 +52,8 @@ class FlightSeatApplicationTest {
           .thenReturn(true)
           .thenReturn(false);
 
-    instance.handleInput(new String[] {"BOOK", "A1", "1"});
-    instance.handleInput(new String[] {"BOOK", "A1", "1"});
+    instance.handleInput(new String[] {"BOOK", "A0", "1"});
+    instance.handleInput(new String[] {"BOOK", "A0", "1"});
     assertEquals("SUCCESS\nFAIL\n", outContent.toString());
   }
 
@@ -66,5 +66,13 @@ class FlightSeatApplicationTest {
     instance.handleInput(new String[] {"BOOK", "A1", "1"});
     instance.handleInput(new String[] {"CANCEL", "A1", "1"});
     assertEquals("SUCCESS\nSUCCESS\n", outContent.toString());
+  }
+
+  @Test
+  @SneakyThrows
+  public void testCorruptSeatLayout() {
+    when(seatBookService.bookSeats("U6", 2)).thenThrow(new NullPointerException());
+    instance.handleInput(new String[] {"BOOK", "U6", "2"});
+    assertEquals("FAIL\n", outContent.toString());
   }
 }

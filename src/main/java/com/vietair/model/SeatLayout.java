@@ -1,15 +1,17 @@
 package com.vietair.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vietair.exception.SeatInvalidException;
 import com.vietair.utility.CharacterUtils;
-import lombok.Data;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * 20 rows, | xx _ xxxx _ xx |
  */
 @Slf4j
-@Data
+@Getter
 public class SeatLayout {
 
   private static final String SEAT_REGEX = "[A-T][0-7]";
@@ -20,7 +22,8 @@ public class SeatLayout {
     seats = new boolean[20][8];
   }
 
-  public SeatLayout(boolean[][] seats) {
+  @JsonCreator
+  public SeatLayout(@JsonProperty("seats") boolean[][] seats) {
     this.seats = seats;
   }
 
@@ -34,10 +37,15 @@ public class SeatLayout {
     seats[seatComponents[0]][seatComponents[1]] = reserveState;
   }
 
-  public static String[] generateSeats(String seatId, int count) {
+  public static String[] generateSeats(String seatId, int count) throws SeatInvalidException {
+    if (count <= 0)
+      return new String[]{};
+    validateSeat(seatId);
+
     String[] seats = new String[count];
+    seats[0] = seatId;
     StringBuilder sb = new StringBuilder(seatId);
-    for (int i = 0; i < count; i++) {
+    for (int i = 1; i < count; i++) {
       sb.setCharAt(1, CharacterUtils.increaseCharDigit(sb.charAt(1)));
       seats[i] = sb.toString();
     }

@@ -1,13 +1,18 @@
 
+
+
 ## How to compile program
 
 ### Self-contained Unix executable
 
 Requirements
 - Graalvm JDK21
+```
+
+```
 - Maven
 
-`mvn -Pnative package`
+`mvn clean -Pnative package`
 
 After running the command, a file named JPMorgan-FlightSeatReservation will be created in target subdirectory 
 
@@ -26,3 +31,4 @@ java -jar target/JPMorgan-FlightSeatReservation-1.0-SNAPSHOT-jar-with-dependenci
 ## Possible Improvement
 - Add retry to persistence service
 - Provide absolute path instead of relative path for persistence filename
+- Have a constant for reserved state
