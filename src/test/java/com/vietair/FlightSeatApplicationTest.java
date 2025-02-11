@@ -48,7 +48,7 @@ class FlightSeatApplicationTest {
   @Test
   @SneakyThrows
   public void testSameBook() {
-    when(seatBookService.bookSeats("A1", 1))
+    when(seatBookService.bookSeats("A0", 1))
           .thenReturn(true)
           .thenReturn(false);
 

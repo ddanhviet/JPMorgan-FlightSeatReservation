@@ -11,8 +11,8 @@ import java.io.IOException;
 @Slf4j
 public class SeatLayoutPersistenceService {
 
-  private final String filename;
   private final ObjectMapper objectMapper;
+  private String filename;
 
   public SeatLayoutPersistenceService(String filename) {
     log.debug("file in use {}", filename);
@@ -47,5 +47,9 @@ public class SeatLayoutPersistenceService {
     } catch (IOException e) {
       throw new PersistenceException("Unable to obtain seat layout from file", e);
     }
+  }
+
+  public void updateFilename(String filename) {
+    this.filename = filename;
   }
 }

@@ -13,7 +13,7 @@ import java.io.File;
 @Slf4j
 public class SeatBookService {
 
-  private static final String LAYOUT_FILENAME = "vietair.seat";
+  static final String LAYOUT_FILENAME = "vietair.seat";
 
   SeatLayout layout;
   SeatOperation seatOperation;
@@ -21,7 +21,11 @@ public class SeatBookService {
   SeatLayoutPersistenceService seatLayoutPersistenceService;
 
   public SeatBookService() throws PersistenceException {
-    seatLayoutPersistenceService = new SeatLayoutPersistenceService(LAYOUT_FILENAME);
+    this(new SeatLayoutPersistenceService(LAYOUT_FILENAME));
+  }
+
+  public SeatBookService(SeatLayoutPersistenceService seatLayoutPersistenceService) throws PersistenceException {
+    this.seatLayoutPersistenceService = seatLayoutPersistenceService;
 
     File f = new File(LAYOUT_FILENAME);
     if (!f.exists())
@@ -40,15 +44,11 @@ public class SeatBookService {
       try {
         seatLayoutPersistenceService.serializeSeatLayout(layout);
       } catch (PersistenceException pe) {
-        log.error("Cannot work with seat layout file", pe);
+        log.error("Cannot save the new seat layout", pe);
         return false;
       }
       return true;
     };
-  }
-
-  public boolean bookSeat(String seatId) throws SeatInvalidException, SeatOperationException {
-    return bookSeats(seatId, 1);
   }
 
   public boolean bookSeats(String startSeatId, int count) throws SeatInvalidException, SeatOperationException {
@@ -59,10 +59,6 @@ public class SeatBookService {
             throw new SeatAlreadyReservedException("Seat " + seatId + " is already reserved");
           }
     );
-  }
-
-  public boolean cancelSeat(String seatId) throws SeatInvalidException, SeatOperationException {
-    return cancelSeats(seatId, 1);
   }
 
   public boolean cancelSeats(String startSeatId, int count) throws SeatInvalidException, SeatOperationException {
